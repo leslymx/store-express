@@ -18,7 +18,8 @@ class ProductsService {
         name: faker.commerce.productName(),
         price: parseInt(faker.commerce.price(), 10),
         image: faker.image.imageUrl(),
-        description: faker.lorem.sentence()
+        description: faker.lorem.sentence(),
+        isBlock: faker.datatype.boolean(),
       });
     }
   }
@@ -51,6 +52,11 @@ class ProductsService {
 
     if (!product) {
       throw boom.notFound('product not found');
+    }
+
+    // logica de negocio para permitir ver ciertos productos y otros no
+    if (product.isBlock) {
+      throw boom.conflict('product is block');
     }
 
     return product;
