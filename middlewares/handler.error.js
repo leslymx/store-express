@@ -1,6 +1,3 @@
-const { param } = require("../api/v1/routes/products/products.router")
-
-
 function logErrors(err, req, res, next) {
 
   /* console.log muy util para cuando queremos
