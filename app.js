@@ -1,16 +1,19 @@
 
 const express = require('express');
 const cors = require('cors');
-const routerApiV1 = require('./api/v1/routes');
+const routerApiV1 = require('./src/routes');
 // los middleware de tipo error se deben de hacer despues
 // de declarar el routing
-const { logErrors, errorHandler, boomErrorHandler } = require('./middlewares/handler.error')
+const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./src/middlewares/handler.error')
 const app = express();
 // especificar el puerto para despliegue
 // asignar de forma dinamica si viene, sino
 // por defecto correria en el 3000
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
+app.get('', (res, req) => {
+
+});
 app.use(express.json());
 
 /**
@@ -32,7 +35,6 @@ const options = {
 
 app.use(cors(options));
 
-
 routerApiV1(app);
 
 
@@ -40,7 +42,10 @@ routerApiV1(app);
 // aca por ejemplo primero ejecuta
 // log y despues handler
 app.use(logErrors);
+app.use(ormErrorHandler);
 app.use(boomErrorHandler);
 app.use(errorHandler);
 
-app.listen(port);
+app.listen(PORT, () => {
+  console.log('server running port', PORT)
+});
